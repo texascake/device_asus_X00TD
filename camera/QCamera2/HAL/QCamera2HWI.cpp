@@ -2800,8 +2800,7 @@ uint8_t QCamera2HardwareInterface::getBufNumRequired(
                     bufferCnt = zslQBuffers + CAMERA_MIN_STREAMING_BUFFERS +
                             mParameters.getNumOfExtraBuffersForImageProc() +
                             mParameters.getNumOfExtraHDRInBufsIfNeeded();
-                }
-                else {
+                } else {
                     // ZSL Burst or Longshot case
                     bufferCnt = zslQBuffers + minCircularBufNum +
                             mParameters.getNumOfExtraBuffersForImageProc() +
