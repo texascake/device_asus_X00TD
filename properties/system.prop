@@ -101,6 +101,9 @@ persist.sys.fflag.override.settings_network_and_internet_v2=true
 ril.subscription.types=NV,RUIM
 telephony.lteOnCdmaDevice=1
 
+# System Server
+arm64.memtag.process.system_server=off
+
 # Time
 persist.timed.enable=true
 
