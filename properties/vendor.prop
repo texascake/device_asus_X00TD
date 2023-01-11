@@ -112,7 +112,6 @@ ro.hardware.egl=adreno
 ro.hardware.vulkan=adreno
 ro.opengles.version=196610
 vendor.display.disable_metadata_dynamic_fps=1
-vendor.display.perf_hint_window=50
 vendor.display.disable_rotator_downscale=1
 
 # DRM
