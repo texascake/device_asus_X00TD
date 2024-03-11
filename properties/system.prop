@@ -102,7 +102,7 @@ ril.subscription.types=NV,RUIM
 telephony.lteOnCdmaDevice=1
 
 # System Server
-arm64.memtag.process.system_server=off
+persist.arm64.memtag.system_server=off
 
 # Time
 persist.timed.enable=true
