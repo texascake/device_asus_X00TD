@@ -159,5 +159,4 @@ on property:sys.boot_completed=1
     write /proc/sys/vm/swappiness 60
     write /sys/block/zram0/comp_algorithm lz4
     swapon_all /vendor/etc/fstab.qcom
-    # STOP EATING MY BATTERY AFTER 100H OF UPTIME FUCK YOU
-    stop statsd
+    chmod 440 /proc/net/unix
