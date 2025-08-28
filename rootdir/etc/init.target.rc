@@ -129,7 +129,7 @@ service vendor.sensors.qti /vendor/bin/sensors.qti
     disabled
 
 service vendor.pd_mapper /system/vendor/bin/pd-mapper
-   class core
+     class core
 
 on property:vold.decrypt=trigger_restart_framework
    restart vendor.camera-provider-2-4
@@ -144,15 +144,16 @@ service dcvs-sh /vendor/bin/init.qti.dcvs.sh
 on property:vendor.dcvs.prop=1
    start dcvs-sh
 
+
 on property:init.svc.vendor.charger=running
     start vendor.qcom-post-boot
     start vendor.hvdcp_opti
     start vendor.power_off_alarm
 
 service vendor.hvdcp_opti /system/vendor/bin/hvdcp_opti
-    class main
-    user root
-    group system wakelock
+     class main
+     user root
+     group system wakelock
 
 on property:sys.boot_completed=1
     write /proc/sys/vm/page-cluster 0
