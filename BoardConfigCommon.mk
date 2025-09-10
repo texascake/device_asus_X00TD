@@ -151,6 +151,7 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_SOURCE := kernel/asus/sdm660
 TARGET_KERNEL_VERSION := 4.19
+TARGET_KERNEL_NO_GCC := true
 
 # Kernel Clang Flags
 KERNEL_CC := CC=clang
