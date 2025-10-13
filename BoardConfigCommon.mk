@@ -179,9 +179,6 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_sdm660
 # Lineage Health
 $(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/charging_enabled)
 
-# LMKD
-TARGET_LMKD_STATS_LOG := true
-
 # Media
 USE_DEVICE_SPECIFIC_MEDIA := true
 DEVICE_SPECIFIC_MEDIA_PATH := $(COMMON_PATH)/qcom-caf/media
