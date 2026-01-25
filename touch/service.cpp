@@ -5,11 +5,11 @@
 
 #define LOG_TAG "vendor.lineage.touch@1.0-service.asus_sdm660"
 
-#include "TouchscreenGesture.h"
-
 #include <android-base/logging.h>
 #include <android/binder_manager.h>
 #include <android/binder_process.h>
+
+#include "TouchscreenGesture.h"
 
 using aidl::vendor::lineage::touch::TouchscreenGesture;
 
