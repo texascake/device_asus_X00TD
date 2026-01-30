@@ -88,8 +88,8 @@ void check_device()
         heapstartsize = "8m";
         heapgrowthlimit = "192m";
         heapsize = "512m";
-        heaptargetutilization = "0.75";
-        heapminfree = "512k";
+        heaptargetutilization = "0.70";
+        heapminfree = "2m";
         heapmaxfree = "8m";
     }
 }
@@ -119,7 +119,7 @@ void NFC_check()
 }
 
 void vendor_load_properties()
- {    
+{
     check_device();
     set_avoid_gfxaccel_config();
     NFC_check();
