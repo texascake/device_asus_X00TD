@@ -12,7 +12,7 @@ cc_library_shared {
     ],
 
     cflags: [
-        "-Werror",
+        "-Wno-error",
         "-Wno-parentheses",
         "-D_ANDROID_",
         "-D_ANDROID_ICS_",

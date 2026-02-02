@@ -73,7 +73,7 @@ static hal_version connectPowerHalLocked() {
         // (re)connect if handle is null
         if (!gPowerHal_Aidl_) {
             ndk::SpAIBinder pwBinder = ndk::SpAIBinder(
-                AServiceManager_getService(kInstance.c_str()));
+                AServiceManager_waitForService(kInstance.c_str()));
             gPowerHal_Aidl_ = aidl::android::hardware::power::IPower::fromBinder(pwBinder);
         }
         if (gPowerHal_Aidl_) {

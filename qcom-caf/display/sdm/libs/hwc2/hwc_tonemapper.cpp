@@ -314,7 +314,6 @@ void HWCToneMapper::DumpToneMapOutput(ToneMapSession *session, int *acquire_fd) 
     return;
   }
 
-  size_t result = 0;
   char dump_file_name[PATH_MAX];
   snprintf(dump_file_name, sizeof(dump_file_name), "%s/frame_dump_primary"
            "/tonemap_%dx%d_frame%d.raw", HWCDebugHandler::DumpDir(), target_buffer->width,
@@ -323,7 +322,7 @@ void HWCToneMapper::DumpToneMapOutput(ToneMapSession *session, int *acquire_fd) 
   FILE* fp = fopen(dump_file_name, "w+");
   if (fp) {
     DLOGI("base addr = %x", target_buffer->base);
-    result = fwrite(reinterpret_cast<void *>(target_buffer->base), target_buffer->size, 1, fp);
+    fwrite(reinterpret_cast<void *>(target_buffer->base), target_buffer->size, 1, fp);
     fclose(fp);
   }
   dump_frame_count_--;

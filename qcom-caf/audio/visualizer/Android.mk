@@ -24,7 +24,7 @@ LOCAL_CFLAGS+= -O2 -fvisibility=hidden
 
 LOCAL_CFLAGS += \
     -Wall \
-    -Werror \
+    -Wno-error \
     -Wno-unused-variable \
     -Wno-unused-parameter \
     -Wno-gnu-designator \

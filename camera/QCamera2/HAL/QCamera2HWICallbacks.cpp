@@ -3066,6 +3066,7 @@ void QCamera2HardwareInterface::dumpMetadataToFile(QCameraStream *stream,
                 data =
                 (void *)((uint8_t *)&tuning_ptr->data[TUNING_MOD1_AF_DATA_OFFSET]);
                 written_len += write(file_fd, data, total_size);
+                LOGH("total written_len: %zd", written_len);
                 close(file_fd);
             }else {
                 LOGE("fail t open file for image dumping");

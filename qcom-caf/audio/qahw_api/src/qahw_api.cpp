@@ -213,7 +213,7 @@ sp<Iqti_audio_server> get_qti_audio_server() {
         sm = defaultServiceManager();
         if (sm != NULL) {
             do {
-                binder = sm->getService(String16(QTI_AUDIO_SERVER));
+                binder = sm->waitForService(String16(QTI_AUDIO_SERVER));
                 if (binder != 0)
                     break;
                 else

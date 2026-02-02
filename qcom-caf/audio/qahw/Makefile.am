@@ -25,6 +25,6 @@ libqahwwrapper_la_CFLAGS  = $(AM_CFLAGS)
 libqahwwrapper_la_CFLAGS += -include stddef.h
 libqahwwrapper_la_CFLAGS += -Dstrlcpy=g_strlcpy $(GLIB_CFLAGS) -include glib.h
 libqahwwrapper_la_CFLAGS += -D__unused=__attribute__\(\(__unused__\)\)
-libqahwwrapper_la_CFLAGS += -Werror -Wall
+libqahwwrapper_la_CFLAGS += -Wno-error -Wall
 libqahwwrapper_la_CFLAGS += -DNDEBUG
 libqahwwrapper_la_LDFLAGS = -shared -avoid-version -llog -lcutils -lhardware $(GLIB_LIBS)

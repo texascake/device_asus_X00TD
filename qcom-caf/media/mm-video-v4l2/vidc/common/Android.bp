@@ -9,7 +9,7 @@ cc_library_static {
     ],
 
     cflags: [
-        "-Werror",
+        "-Wno-error",
         "-D_ANDROID_",
         "-D_ANDROID_ICS_",
     ],

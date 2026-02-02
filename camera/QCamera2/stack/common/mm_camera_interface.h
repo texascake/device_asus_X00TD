@@ -86,7 +86,7 @@ typedef enum {
   FILE *fp = fopen(filename, "w+"); \
   if (fp) { \
     rc = fwrite(p_addr, 1, len, fp); \
-    LOGE("written size %d", len); \
+    LOGE("written size %zu", rc); \
     fclose(fp); \
   } else { \
     LOGE("open %s failed", filename); \

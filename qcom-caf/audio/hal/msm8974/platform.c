@@ -3091,8 +3091,7 @@ static int init_be_dai_name_table(struct audio_device *adev)
 {
     const char *mixer_ctl_name = "Backend DAI Name Table";
     struct mixer_ctl *ctl;
-    int i, j, ret, size;
-    bool valid_hw_interface;
+    int ret, size;
 
     ctl = mixer_get_ctl_by_name(adev->mixer, mixer_ctl_name);
     if (!ctl) {
@@ -3138,25 +3137,6 @@ static int init_be_dai_name_table(struct audio_device *adev)
         ALOGE("%s: Failed to get %s\n", __func__, mixer_ctl_name);
         ret = -EFAULT;
         goto freeMem;
-    }
-
-    /*
-     * Validate all sound devices have a valid backend set to catch
-     * errors for uncommon sound devices
-     */
-    for (i = 0; i < SND_DEVICE_MAX; i++) {
-        valid_hw_interface = false;
-
-        if (hw_interface_table[i] == NULL)
-            continue;
-
-        for (j = 0; j < max_be_dai_names; j++) {
-            if (strcmp(hw_interface_table[i], be_dai_name_table[j].be_name)
-                == 0) {
-                valid_hw_interface = true;
-                break;
-            }
-        }
     }
 
     goto done;
@@ -8197,7 +8177,7 @@ static void set_audiocal(void *platform, struct str_parms *parms, char *value, i
     acdb_audio_cal_cfg_t cal;
     uint8_t *dptr = NULL;
     int32_t dlen;
-    int err, ret;
+    int err;
     char *address = "";
     if(value == NULL || platform == NULL || parms == NULL) {
         ALOGE("[%s] received null pointer, failed",__func__);
@@ -8209,7 +8189,7 @@ static void set_audiocal(void *platform, struct str_parms *parms, char *value, i
     if (err >= 0) {
         memset(&cal, 0, sizeof(acdb_audio_cal_cfg_t));
         /* parse audio calibration keys */
-        ret = parse_audiocal_cfg(parms, &cal);
+        parse_audiocal_cfg(parms, &cal);
 
         str_parms_del(parms, AUDIO_PARAMETER_KEY_AUD_CALDATA);
         dlen = strlen(value);
@@ -8253,7 +8233,7 @@ static void set_audiocal(void *platform, struct str_parms *parms, char *value, i
             goto done_key_audcal;
         }
         if(my_data->acdb_set_audio_cal) {
-            ret = my_data->acdb_set_audio_cal((void *)&cal, (void*)dptr, dlen);
+            my_data->acdb_set_audio_cal((void *)&cal, (void*)dptr, dlen);
         }
     }
 done_key_audcal:
@@ -12038,14 +12018,10 @@ void platform_make_cal_cfg(acdb_audio_cal_cfg_t* cal, int acdb_dev_id,
         int sample_rate, uint32_t module_id, uint16_t instance_id,
         uint32_t param_id, bool persist)
 {
-    int persist_send_flags = 1;
 
     if (!cal) {
         return;
     }
-
-    if (persist)
-        persist_send_flags |= 0x2;
 
     memset(cal, 0, sizeof(acdb_audio_cal_cfg_t));
 
@@ -12066,14 +12042,10 @@ void platform_make_cal_cfg(acdb_audio_cal_cfg_t* cal, int acdb_dev_id,
         int acdb_device_type, int app_type, int topology_id,
         int sample_rate, uint32_t module_id, uint32_t param_id, bool persist)
 {
-    int persist_send_flags = 1;
 
     if (!cal) {
         return;
     }
-
-    if (persist)
-        persist_send_flags |= 0x2;
 
     memset(cal, 0, sizeof(acdb_audio_cal_cfg_t));
 

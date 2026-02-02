@@ -1819,7 +1819,6 @@ static void check_usecases_codec_backend(struct audio_device *adev,
     snd_device_t derive_snd_device[AUDIO_USECASE_MAX];
     snd_device_t split_snd_devices[SND_DEVICE_OUT_END];
     int i, num_uc_to_switch = 0, num_devices = 0;
-    int status = 0;
     bool force_restart_session = false;
     /*
      * This function is to make sure that all the usecases that are active on
@@ -1967,13 +1966,14 @@ static void check_usecases_codec_backend(struct audio_device *adev,
                      use_case_table[usecase->id],
                      platform_get_snd_device_name(usecase->out_snd_device));
                 /* Update voc calibration before enabling Voice/VoIP route */
-                if (usecase->type == VOICE_CALL || usecase->type == VOIP_CALL)
-                    status = platform_switch_voice_call_device_post(adev->platform,
+                if (usecase->type == VOICE_CALL || usecase->type == VOIP_CALL) {
+                    platform_switch_voice_call_device_post(adev->platform,
                                                        usecase->out_snd_device,
                                                        platform_get_input_snd_device(
                                                            adev->platform, NULL,
                                                            &uc_info->device_list,
                                                            usecase->type));
+                }
                 enable_audio_route(adev, usecase);
                 if (usecase->stream.out && usecase->id == USECASE_AUDIO_PLAYBACK_VOIP) {
                     out_set_voip_volume(&usecase->stream.out->stream,
@@ -1994,10 +1994,9 @@ static void check_usecases_capture_codec_backend(struct audio_device *adev,
     bool switch_device[AUDIO_USECASE_MAX];
     int i, num_uc_to_switch = 0;
     int backend_check_cond = is_codec_backend_out_device_type(&uc_info->device_list);
-    int status = 0;
-
     bool force_routing = platform_check_and_set_capture_codec_backend_cfg(adev, uc_info,
                          snd_device);
+
     ALOGD("%s:becf: force routing %d", __func__, force_routing);
 
     /*
@@ -2098,9 +2097,9 @@ static void check_usecases_capture_codec_backend(struct audio_device *adev,
                     voip_snd_device = platform_get_output_snd_device(adev->platform,
                                                                      usecase->stream.out,
                                                                      usecase->type);
-                    status = platform_switch_voice_call_device_post(adev->platform,
-                                                                    voip_snd_device,
-                                                                    usecase->in_snd_device);
+                    platform_switch_voice_call_device_post(adev->platform,
+                                                           voip_snd_device,
+                                                           usecase->in_snd_device);
                 }
                 enable_audio_route(adev, usecase);
             }
@@ -8660,6 +8659,7 @@ int adev_open_output_stream(struct audio_hw_device *dev,
                                              popcount(out->channel_mask), out->playback_started);
     /* setup a channel for client <--> adsp communication for stream events */
     is_direct_passthough = audio_extn_passthru_is_direct_passthrough(out);
+    ALOGD("%s: is_direct_passthough %d", __func__, is_direct_passthough);
     if ((out->flags & AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD) ||
             (out->flags & AUDIO_OUTPUT_FLAG_DIRECT_PCM) ||
         audio_extn_ip_hdlr_intf_supported_for_copp(adev->platform) ||

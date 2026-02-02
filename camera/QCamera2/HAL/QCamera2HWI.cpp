@@ -4082,7 +4082,7 @@ int32_t QCamera2HardwareInterface::updatePostPreviewParameters() {
     // Enable OIS only in Camera mode and 4k2k camcoder mode
     int32_t rc = NO_ERROR;
     rc = mParameters.updateOisMode(OIS_MODE_ACTIVE);
-    return NO_ERROR;
+    return rc;
 }
 
 /*===========================================================================
@@ -6037,8 +6037,6 @@ int QCamera2HardwareInterface::takeBackendPic_internal(bool *JpegMemOpt, char *r
  *==========================================================================*/
 void QCamera2HardwareInterface::clearIntPendingEvents()
 {
-    int rc = NO_ERROR;
-
     if (true == m_bIntRawEvtPending) {
         preparePreview();
         startPreview();
@@ -6046,7 +6044,7 @@ void QCamera2HardwareInterface::clearIntPendingEvents()
     if (true == m_bIntJpegEvtPending) {
         if (false == mParameters.isZSLMode()) {
             lockAPI();
-            rc = processAPI(QCAMERA_SM_EVT_START_PREVIEW, NULL);
+            processAPI(QCAMERA_SM_EVT_START_PREVIEW, NULL);
             unlockAPI();
         }
     }
@@ -10979,7 +10977,6 @@ void *QCamera2HardwareInterface::deferredWorkRoutine(void *obj)
 {
     int running = 1;
     int ret;
-    uint8_t is_active = FALSE;
     int32_t job_status = 0;
 
     QCamera2HardwareInterface *pme = (QCamera2HardwareInterface *)obj;
@@ -11002,11 +10999,9 @@ void *QCamera2HardwareInterface::deferredWorkRoutine(void *obj)
         switch (cmd) {
         case CAMERA_CMD_TYPE_START_DATA_PROC:
             LOGH("start data proc");
-            is_active = TRUE;
             break;
         case CAMERA_CMD_TYPE_STOP_DATA_PROC:
             LOGH("stop data proc");
-            is_active = FALSE;
             // signal cmd is completed
             cam_sem_post(&cmdThread->sync_sem);
             break;

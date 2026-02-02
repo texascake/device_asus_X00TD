@@ -1243,6 +1243,7 @@ int32_t QCamera3GrallocMemory::getBufferIndex(uint32_t frameNumber)
  *==========================================================================*/
 int QCamera3GrallocMemory::cacheOps(uint32_t index, unsigned int cmd)
 {
+#ifndef TARGET_ION_ABI_VERSION
     int rc = 0;
     bool needToInvalidate = false;
     struct private_handle_t *privateHandle = NULL;
@@ -1264,7 +1265,7 @@ int QCamera3GrallocMemory::cacheOps(uint32_t index, unsigned int cmd)
                needToInvalidate = true;
         }
     }
-#ifndef TARGET_ION_ABI_VERSION
+
     LOGD("needToInvalidate %d buf idx %d", needToInvalidate, index);
     if(((cmd == ION_IOC_INV_CACHES) || (cmd == ION_IOC_CLEAN_INV_CACHES))
         && needToInvalidate) {
@@ -1273,10 +1274,20 @@ int QCamera3GrallocMemory::cacheOps(uint32_t index, unsigned int cmd)
     else if(cmd == ION_IOC_CLEAN_CACHES) {
         rc = cacheOpsInternal(index, cmd, mPtr[index]);
     }
-#else
-    (void) cmd;
-#endif //TARGET_ION_ABI_VERSION
     return rc;
+#else
+    if (index >= MM_CAMERA_MAX_NUM_FRAMES) {
+        LOGE("Index out of bounds");
+        return -1;
+    }
+    if (index < mStartIdx) {
+        LOGE("buffer index %d less than starting index %d",
+                 index, mStartIdx);
+        return BAD_INDEX;
+    }
+    (void) cmd;
+#endif // TARGET_ION_ABI_VERSION
+    return 0;
 }
 
 /*===========================================================================

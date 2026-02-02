@@ -281,7 +281,7 @@ int32_t mm_camera_muxer_camera_open(uint8_t cam_idx,
         return rc;
     } else {
         LOGD("Open succeded\n");
-        rc  = mm_camera_util_set_camera_object(cam_idx, my_obj);
+        rc = mm_camera_util_set_camera_object(cam_idx, my_obj);
         my_obj->vtbl.camera_handle = (cam_obj->my_hdl | my_obj->my_hdl);
         cam_obj->vtbl.camera_handle = my_obj->vtbl.camera_handle;
         cam_obj->aux_cam_obj[cam_obj->num_s_cnt++] = my_obj;
@@ -385,10 +385,10 @@ int32_t mm_camera_muxer_close_camera(uint32_t camera_handle,
             pthread_mutex_unlock(&cam_obj->muxer_lock);
             rc = 0;
         } else {
-            rc  = mm_camera_util_set_camera_object(cam_idx, NULL);
+            rc = mm_camera_util_set_camera_object(cam_idx, NULL);
             pthread_mutex_lock(&my_obj->cam_lock);
             pthread_mutex_unlock(&cam_obj->muxer_lock);
-            rc = mm_camera_close(my_obj);
+            mm_camera_close(my_obj);
             pthread_mutex_destroy(&my_obj->cam_lock);
             free(my_obj);
             my_obj = NULL;
@@ -1746,7 +1746,6 @@ void mm_camera_muxer_stream_frame_sync(mm_camera_super_buf_t *super_buf,
 void mm_camera_muxer_channel_frame_sync(mm_camera_super_buf_t *super_buf,
         void *user_data)
 {
-    int32_t rc = 0;
     mm_channel_t *ch_obj = (mm_channel_t *)user_data;
     mm_channel_t *m_obj = ch_obj;
 
@@ -1758,7 +1757,7 @@ void mm_camera_muxer_channel_frame_sync(mm_camera_super_buf_t *super_buf,
         m_obj = m_obj->master_ch_obj;
     }
 
-    rc = mm_camera_muxer_do_frame_sync(&m_obj->frame_sync.superbuf_queue,
+    mm_camera_muxer_do_frame_sync(&m_obj->frame_sync.superbuf_queue,
             super_buf, NULL);
     mm_camera_muxer_channel_req_data_cb(NULL,
                 ch_obj);

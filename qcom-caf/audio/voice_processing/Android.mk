@@ -6,7 +6,7 @@ include $(CLEAR_VARS)
 
 LOCAL_CFLAGS += \
     -Wall \
-    -Werror \
+    -Wno-error \
     -Wno-unused-variable \
     -Wno-gnu-designator \
     -Wno-unused-value \

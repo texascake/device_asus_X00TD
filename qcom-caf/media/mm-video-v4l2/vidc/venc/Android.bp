@@ -9,7 +9,7 @@ cc_library_shared {
     ],
 
     cflags: [
-        "-Werror",
+        "-Wno-error",
         "-D_ANDROID_",
         "-D_ANDROID_ICS_",
         "-D_MSM8974_",

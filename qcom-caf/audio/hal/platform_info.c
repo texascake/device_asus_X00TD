@@ -1210,7 +1210,7 @@ static void process_custom_mtmx_in_params(const XML_Char **attr)
 static void process_custom_mtmx_param_coeffs(const XML_Char **attr)
 {
     uint32_t attr_idx = 0, out_ch_idx = -1, ch_coeff_count = 0;
-    uint32_t ip_channels = 0, op_channels = 0, idx = 0;
+    uint32_t ip_channels = 0, idx = 0;
     char *context = NULL, *ch_coeff_value = NULL;
     struct audio_custom_mtmx_params *mtmx_params = NULL;
 
@@ -1237,7 +1237,6 @@ static void process_custom_mtmx_param_coeffs(const XML_Char **attr)
     }
     ch_coeff_value = strtok_r((char *)attr[attr_idx++], " ", &context);
     ip_channels = mtmx_params->info.ip_channels;
-    op_channels = mtmx_params->info.op_channels;
     while(ch_coeff_value && ch_coeff_count < ip_channels) {
         mtmx_params->coeffs[ip_channels * out_ch_idx + ch_coeff_count++]
                            = atoi(ch_coeff_value);

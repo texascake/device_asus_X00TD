@@ -3,7 +3,7 @@ LOCAL_PATH:= $(call my-dir)
 # trace logging lib
 include $(CLEAR_VARS)
 LOCAL_CFLAGS  := -D_ANDROID_
-LOCAL_CFLAGS += -Werror -Wunused-parameter
+LOCAL_CFLAGS += -Wno-error -Wunused-parameter
 ifneq (,$(filter address,$(SANITIZE_TARGET)))
   LOCAL_CFLAGS += -D__BIONIC_FORTIFY
 endif

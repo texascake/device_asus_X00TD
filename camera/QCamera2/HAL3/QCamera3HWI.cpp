@@ -3572,11 +3572,10 @@ int QCamera3HardwareInterface::configureStreamsPerfLocked(
             cam_dimension_t analysisDim;
             analysisDim = mCommon.getMatchingDimension(previewSize,
                     analysisInfo.analysis_recommended_res);
-            uint32_t camHandle = mCameraHandle->camera_handle;
-            uint32_t chHandle = mChannelHandle;
+
             if (isDualCamera() && !mCommon.needAnalysisStream()) {
-                camHandle = get_main_camera_handle(mCameraHandle->camera_handle);
-                chHandle = get_main_camera_handle(mChannelHandle);
+                get_main_camera_handle(mCameraHandle->camera_handle);
+                get_main_camera_handle(mChannelHandle);
             }
             mAnalysisChannel = new QCamera3SupportChannel(
                     mCameraHandle->camera_handle,
@@ -6954,7 +6953,6 @@ int QCamera3HardwareInterface::processCaptureRequest(
     // For first capture request, send capture intent, and
     // stream on all streams
     uint32_t camHdl = mCameraHandle->camera_handle;
-    uint32_t channelHdl = mChannelHandle;
     int config_index = CONFIG_INDEX_MAIN;
     CameraMetadata l_meta = meta;
     metadata_buffer_t *params = mParameters;
@@ -6973,7 +6971,6 @@ int QCamera3HardwareInterface::processCaptureRequest(
         // resources are deallocated
         if(isDualCamera()) {
             camHdl = get_main_camera_handle(mCameraHandle->camera_handle);
-            channelHdl = mChannelHandle;
 
             //Set HAL pptype for dual camera.
             //For multicamera set PP type NONE.
@@ -11182,6 +11179,7 @@ void QCamera3HardwareInterface::dumpMetadataToFile(tuning_params_t &meta,
             total_size = meta.tuning_cac_data_size;
             data = (void *)((uint8_t *)&meta.data[TUNING_CAC_DATA_OFFSET]);
             written_len += write(file_fd, data, total_size);
+            LOGD("total written_len: %zd", written_len);
             close(file_fd);
         }else {
             LOGE("fail to open file for metadata dumping");

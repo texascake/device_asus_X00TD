@@ -984,7 +984,6 @@ mm_camera_buf_def_t *QCameraPostProcessor::getOfflinePPInputBuffer(
     QCameraChannel *pChannel = NULL;
     QCameraStream *src_pStream = NULL;
     mm_camera_buf_def_t *data_frame = NULL;
-    mm_camera_buf_def_t *meta_frame = NULL;
 
     if (mOfflineDataBufs == NULL) {
         LOGE("Offline Buffer not allocated");
@@ -1010,7 +1009,6 @@ mm_camera_buf_def_t *QCameraPostProcessor::getOfflinePPInputBuffer(
                 data_frame = src_frame->bufs[i];
             } else if (src_pStream->getMyType() == CAM_STREAM_TYPE_METADATA){
                 LOGH("Found Metada input stream");
-                meta_frame = src_frame->bufs[i];
             }
         }
     }
@@ -1487,7 +1485,10 @@ int32_t QCameraPostProcessor::processPPData(mm_camera_super_buf_t *frame)
         LOGH("pReprocFrame == NULL || isFaceDetectionEnabled = %d",
                 m_parent->mParameters.isFaceDetectionEnabled());
     }
-#endif
+#else
+    (void) pReprocFrame;
+#endif // TARGET_TS_MAKEUP
+
     int8_t mCurReprocCount = job->reprocCount;
     if ((m_parent->isLongshotEnabled()
             && (!(m_parent->mParameters.getQuadraCfa())|| (mCurReprocCount == 2)))

@@ -39,6 +39,11 @@
 #endif
 
 #define BRIGHTNESS_MODE_USER 0
+
+#ifdef BRIGHTNESS_MODE_LOW_PERSISTENCE
+#undef BRIGHTNESS_MODE_LOW_PERSISTENCE
+#endif
+
 #define BRIGHTNESS_MODE_LOW_PERSISTENCE 1
 
 /******************************************************************************/

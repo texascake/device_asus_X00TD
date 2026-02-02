@@ -417,11 +417,9 @@ on_error:
  *   @my_obj   : ptr to a camera object
  *   @event    : event to be queued
  *
- * RETURN     : int32_t type of status
- *              0  -- success
- *              -1 -- failure
+ * RETURN     : N/A
  *==========================================================================*/
-int32_t mm_camera_close(mm_camera_obj_t *my_obj)
+void mm_camera_close(mm_camera_obj_t *my_obj)
 {
     LOGD("unsubscribe evt");
 
@@ -458,8 +456,6 @@ int32_t mm_camera_close(mm_camera_obj_t *my_obj)
     pthread_mutex_destroy(&my_obj->evt_lock);
     pthread_cond_destroy(&my_obj->evt_cond);
     pthread_mutex_unlock(&my_obj->cam_lock);
-
-    return 0;
 }
 
 /*===========================================================================
