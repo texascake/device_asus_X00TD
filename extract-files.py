@@ -113,9 +113,6 @@ blob_fixups: blob_fixups_user_type = {
     # DRM Widevine - uneeded
     'vendor/lib64/libwvhidl.so': blob_fixup()
         .replace_needed('libcrypto.so', 'libcrypto-v33.so'),
-    # QCRIL - uneeded
-    'vendor/lib64/libril-qc-hal-qmi.so': blob_fixup()
-        .replace_needed('libprotobuf-cpp-full-21.7.so', 'libprotobuf-cpp-lite-21.12.so'),
 }  # fmt: skip
 
 # Define the module
