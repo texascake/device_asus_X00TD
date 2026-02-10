@@ -70,7 +70,6 @@ ro.hwui.text_large_cache_height=2048
 persist.dbg.ims_volte_enable=1
 
 # Media
-debug.stagefright.c2inputsurface=-1
 media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 media.stagefright.thumbnail.prefer_hw_codecs=true
 vidc.enc.target_support_bframe=1
