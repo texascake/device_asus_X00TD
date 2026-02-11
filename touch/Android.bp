@@ -4,9 +4,9 @@
 //
 
 cc_binary {
-    name: "vendor.lineage.touch-service.asus_sdm660",
-    init_rc: ["vendor.lineage.touch-service.asus_sdm660.rc"],
-    vintf_fragments: ["vendor.lineage.touch-service.asus_sdm660.xml"],
+    name: "vendor.lineage.touch-service.X01BD",
+    init_rc: ["vendor.lineage.touch-service.X01BD.rc"],
+    vintf_fragments: ["vendor.lineage.touch-service.X01BD.xml"],
     relative_install_path: "hw",
     vendor: true,
     srcs: [

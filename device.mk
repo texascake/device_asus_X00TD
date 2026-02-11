@@ -338,6 +338,9 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay-translates \
     $(DEVICE_PATH)/overlay-lineage
 
+PRODUCT_PACKAGES += \
+    NoCutoutOverlay
+
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # Partitions
@@ -531,7 +534,7 @@ PRODUCT_PACKAGES += \
 
 # Touch
 PRODUCT_PACKAGES += \
-    vendor.lineage.touch-service.asus_sdm660
+    vendor.lineage.touch-service.X01BD
 
 # USB
 PRODUCT_PACKAGES += \
@@ -574,6 +577,7 @@ PRODUCT_PACKAGES += \
     wificond \
     libwpa_client \
     WifiOverlay \
+    X01BDWifiOverlay \
     wpa_supplicant \
     wpa_supplicant.conf
 
@@ -594,24 +598,6 @@ TARGET_SCREEN_WIDTH := 1080
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service-X01BD
 
-# Overlays
-DEVICE_PACKAGE_OVERLAYS += \
-    $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-lineage
-
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
-    $(LOCAL_PATH)/overlay-lineage/lineage-sdk
-
-PRODUCT_PACKAGES += \
-    NoCutoutOverlay
-
 # Ramdisk
 PRODUCT_PACKAGES += \
     init.device.rc
-
-# Wifi
-PRODUCT_PACKAGES += \
-    X01BDWifiOverlay
-
-# Inherit the proprietary files
-$(call inherit-product, vendor/asus/X01BD/X01BD-vendor.mk)
