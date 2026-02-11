@@ -505,4 +505,14 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>slot2</instance>
         </interface>
     </hal>
+    <!-- X01BD focaltech hidl -->
+    <hal format="hidl">
+        <name>vendor.focaltech.fingerprint</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IFocalFingerprintService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
 </manifest>

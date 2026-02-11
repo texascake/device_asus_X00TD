@@ -6,9 +6,8 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter X01BD,$(TARGET_DEVICE)),)
-  subdir_makefiles=$(call first-makefiles-under,$(LOCAL_PATH))
-  $(foreach mk,$(subdir_makefiles),$(info including $(mk) ...)$(eval include $(mk)))
+subdir_makefiles=$(call first-makefiles-under,$(LOCAL_PATH))
+$(foreach mk,$(subdir_makefiles),$(info including $(mk) ...)$(eval include $(mk)))
 
 include $(CLEAR_VARS)
 
@@ -16,5 +15,3 @@ include $(CLEAR_VARS)
 $(shell  mkdir -p $(TARGET_OUT_VENDOR)/firmware; \
 	ln -sf /dev/block/bootdevice/by-name/msadp \
 	$(TARGET_OUT_VENDOR)/firmware/msadp)
-
-endif
