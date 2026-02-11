@@ -7,6 +7,7 @@
 # Inherit the proprietary files
 $(call inherit-product, vendor/asus/sdm660-common/sdm660-common-vendor.mk)
 
+# Our device is non-AB
 $(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
 
 # Inherit our signing key
@@ -326,7 +327,6 @@ PRODUCT_PACKAGES += \
     libOmxCore \
     libstagefright_amrnb_common.vendor \
     libstagefright_enc_common \
-    libstagefright_enc_common.vendor \
     libstagefright_enc_common.vendor \
     libstagefrighthw \
     libstagefright_softomx_plugin.vendor \
