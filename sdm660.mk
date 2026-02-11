@@ -555,6 +555,10 @@ PRODUCT_PACKAGES += \
     libprotobuf-cpp-full-21.7 \
     libprotobuf-cpp-lite-21.7
 
+# libui compat
+PRODUCT_PACKAGES += \
+    libui-v34
+
 # VNDK
 PRODUCT_PACKAGES += \
     libstdc++_vendor
