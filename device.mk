@@ -577,7 +577,6 @@ PRODUCT_PACKAGES += \
     wificond \
     libwpa_client \
     WifiOverlay \
-    X01BDWifiOverlay \
     wpa_supplicant \
     wpa_supplicant.conf
 
