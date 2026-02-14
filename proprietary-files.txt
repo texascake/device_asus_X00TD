@@ -899,14 +899,14 @@ system_ext/priv-app/ims/ims.apk|28a98e643e2fc9f1e5931078f9f5b77fc908122b
 
 # Radio (IMS) - from LA.UM.9.6.3.r1-06200-89xx.0
 system_ext/lib64/libimsmedia_jni.so;SYMLINK=system_ext/priv-app/ims/lib/arm64/libimsmedia_jni.so|90c9dc8d2e97231b3ef49d08365250f48ac79901
-system_ext/lib64/lib-imscamera.so|82f4d2e56ec9117b21c710b3e787a6bc297537dd
+system_ext/lib64/lib-imscamera.so|86b504a3af2260d5d4f268e55fa404ff52f45235
 system_ext/lib64/lib-imsvt.so|aa6aaee7ec89ccab0a8314f13cdb37b5f4a0b3e4
 system_ext/lib64/lib-imsvtextutils.so|5048a889d3289471ea338b9139053b61f267495a
 vendor/etc/init/ims_rtp_daemon_legacy.rc|104b2a879db4d3dd44e74a3d7f6e69f6972c9129
 
 # IMS (VT) - from Zebra/helios/helios:14/14-23-05.00-UG-U05-STD-HEL-04/5:user/release-keys
 system_ext/lib64/libimscamera_jni.so;SYMLINK=system_ext/priv-app/ims/lib/arm64/libimscamera_jni.so|dec6cc1814335c12127609508031ba5b39b56c42
-system_ext/lib64/lib-imsvideocodec.so|79da05a2a15c4b136fe7cbc905b239ed5f57aba9
+system_ext/lib64/lib-imsvideocodec.so|8d2999f711fdd9c08ffc9ebc5353238c0f1d1732
 system_ext/lib64/lib-imsvtutils.so|80cb83ced3f289e2fe8f444cf0cfd8c2842f4818
 
 # PD - from Zebra/helios/helios:14/14-23-05.00-UG-U05-STD-HEL-04/5:user/release-keys
@@ -987,7 +987,7 @@ vendor/etc/acdbdata/adsp_avs_config.acdb
 vendor/firmware/tfa98xx.cnt
 
 # Camera-sensors - from S62Pro RKQ1.210406.002
-vendor/lib/libmmcamera_ppeiscore.so|22ff0fb1c38535b0ccf7ad7760eae5e32ad3a542
+vendor/lib/libmmcamera_ppeiscore.so|25c21851a06967662fd68773620c23688de0b3ee
 
 # Camera
 vendor/lib/dualcali_dump.bin
