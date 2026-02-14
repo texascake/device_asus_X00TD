@@ -35,7 +35,7 @@ LOCAL_CLANG                   := true
 # TODO: Remove libui after addressing gpu_tonemapper issues
 LOCAL_SHARED_LIBRARIES        := libsdmcore libqservice libbinder libhardware libhardware_legacy \
                                  libutils libcutils libsync libqdutils libqdMetaData \
-                                 libsdmutils libc++ liblog libgrallocutils libui-v34 \
+                                 libsdmutils libc++ liblog libgrallocutils libui \
                                  libgpu_tonemapper libhidlbase \
                                  libdisplayconfig.qti \
                                  android.hardware.graphics.mapper@2.0 \
