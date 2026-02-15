@@ -190,7 +190,7 @@ LOCAL_CFLAGS += -DUSE_CAMERA_METABUFFER_UTILS
 LOCAL_C_INCLUDES += \
         $(call project-path-for,qcom-display)/libqservice
 LOCAL_SHARED_LIBRARIES := liblog libhardware libutils libcutils libdl libsync
-LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui-v34 libcamera_metadata
+LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui libcamera_metadata
 LOCAL_SHARED_LIBRARIES += libqdMetaData libqservice libbinder
 LOCAL_SHARED_LIBRARIES += libbase libcutils libdl libhal_dbg
 ifneq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),3.18 4.4 4.9))
