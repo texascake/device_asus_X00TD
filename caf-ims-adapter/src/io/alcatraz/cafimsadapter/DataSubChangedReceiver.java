@@ -22,11 +22,15 @@ import android.os.UserHandle;
 public class DataSubChangedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (context == null) {
+        if (context == null || intent == null) {
             return;
         }
-        context.sendBroadcastAsUser(
-            new Intent().setAction("org.codeaurora.intent.action.ACTION_DDS_SWITCH_DONE"),
-            UserHandle.ALL);
+
+        Intent ddsIntent = new Intent("org.codeaurora.intent.action.ACTION_DDS_SWITCH_DONE");
+        
+        ddsIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        ddsIntent.addFlags(Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND);
+
+        context.sendBroadcastAsUser(ddsIntent, UserHandle.ALL);
     }
 }
