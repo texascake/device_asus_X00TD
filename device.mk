@@ -19,6 +19,9 @@ $(call inherit-product, hardware/qcom-caf/common/common.mk)
 # For device without sdcardfs
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
+# Include extras if its exist
+-include device/asus/X01BD-ext/extras.mk
+
 # Kernel
 PRODUCT_ENABLE_UFFD_GC := true
 
