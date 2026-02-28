@@ -23,7 +23,7 @@ internal class DolbyController private constructor(
     private val context: Context
 ) {
     private var dolbyEffect = DolbyAudioEffect(EFFECT_PRIORITY, audioSession = 0)
-    private val audioManager = context.getSystemService(AudioManager::class.java)
+    private val audioManager = context.getSystemService(AudioManager::class.java)!!
     private val handler = Handler(context.mainLooper)
 
     // Restore current profile on every media session
@@ -57,10 +57,10 @@ internal class DolbyController private constructor(
             field = value
             dlog(TAG, "setRegisterCallbacks($value)")
             if (value) {
-                audioManager!!.registerAudioPlaybackCallback(playbackCallback, handler)
+                audioManager.registerAudioPlaybackCallback(playbackCallback, handler)
                 audioManager.registerAudioDeviceCallback(audioDeviceCallback, handler)
             } else {
-                audioManager!!.unregisterAudioPlaybackCallback(playbackCallback)
+                audioManager.unregisterAudioPlaybackCallback(playbackCallback)
                 audioManager.unregisterAudioDeviceCallback(audioDeviceCallback)
             }
         }
@@ -102,13 +102,13 @@ internal class DolbyController private constructor(
         dsOn = prefs.getBoolean(DolbyConstants.PREF_ENABLE, true)
 
         context.resources.getStringArray(R.array.dolby_profile_values)
-            .map { it.toInt() }
-            .forEach { profile ->
-                // Reset dolby first to prevent it from loading bad settings
-                dolbyEffect.resetProfileSpecificSettings(profile)
-                // Now restore our profile-specific settings
-                restoreSettings(profile)
-            }
+                .map { it.toInt() }
+                .forEach { profile ->
+                    // Reset dolby first to prevent it from loading bad settings
+                    dolbyEffect.resetProfileSpecificSettings(profile)
+                    // Now restore our profile-specific settings
+                    restoreSettings(profile)
+                }
 
         // Finally restore the current profile.
         setCurrentProfile()
@@ -119,6 +119,13 @@ internal class DolbyController private constructor(
         val prefs = context.getSharedPreferences("profile_$profile", Context.MODE_PRIVATE)
         setPreset(
             prefs.getString(DolbyConstants.PREF_PRESET, getPreset(profile))!!,
+            profile
+        )
+        setIeqPreset(
+            prefs.getString(
+                DolbyConstants.PREF_IEQ,
+                getIeqPreset(profile).toString()
+            )!!.toInt(),
             profile
         )
         setHeadphoneVirtEnabled(
@@ -202,8 +209,8 @@ internal class DolbyController private constructor(
         dlog(TAG, "setPreset: $value")
         checkEffect()
         val gains = value.split(",")
-            .map { it.toInt() }
-            .toIntArray()
+                .map { it.toInt() }
+                .toIntArray()
         dolbyEffect.setDapParameter(DsParam.GEQ_BAND_GAINS, gains, profile)
     }
 
@@ -288,6 +295,17 @@ internal class DolbyController private constructor(
         checkEffect()
         dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_ENABLE, (value > 0), profile)
         dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_AMOUNT, value, profile)
+    }
+
+    fun getIeqPreset(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterInt(DsParam.IEQ_PRESET, profile).also {
+            dlog(TAG, "getIeqPreset: $it")
+        }
+
+    fun setIeqPreset(value: Int, profile: Int = this.profile) {
+        dlog(TAG, "setIeqPreset: $value")
+        checkEffect()
+        dolbyEffect.setDapParameter(DsParam.IEQ_PRESET, value, profile)
     }
 
     companion object {
