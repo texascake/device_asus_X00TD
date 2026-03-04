@@ -128,7 +128,7 @@ DisplayError Strategy::GetNextStrategy(StrategyConstraints *constraints) {
   // programming the hardware.
   LayerStack *layer_stack = hw_layers_info_->stack;
   for (uint32_t i = 0; i < hw_layers_info_->app_layer_count; i++) {
-    layer_stack->layers.at(i)->composition = kCompositionGPU;
+    layer_stack->layers.at(i)->composition = kCompositionSDE;
     layer_stack->layers.at(i)->request.flags.request_flags = 0;  // Reset layer request
   }
 

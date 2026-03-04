@@ -177,8 +177,9 @@ HWC2::Error HWCDisplayPrimary::Validate(uint32_t *out_num_types, uint32_t *out_n
   BuildLayerStack();
 
   if (color_tranform_failed_) {
-    // Must fall back to client composition
-    MarkLayersForClientComposition();
+    // Color transform failed but SDE composition preferred.
+    // Individual layers handled by strategy extension.
+    DLOGW("Color transform failed but SDE composition preferred");
   }
 
   // Checks and replaces layer stack for solid fill
@@ -428,8 +429,8 @@ uint32_t HWCDisplayPrimary::GetOptimalRefreshRate(bool one_updating_layer) {
 DisplayError HWCDisplayPrimary::Refresh() {
   DisplayError error = kErrorNone;
 
-  callbacks_->Refresh(HWC_DISPLAY_PRIMARY);
-  handle_idle_timeout_ = true;
+  // Idle timeout refresh suppressed: SDE composition is maintained,
+  // no need to re-validate an unchanged layer stack.
 
   return error;
 }

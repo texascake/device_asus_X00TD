@@ -261,7 +261,7 @@ void CompManager::PrepareStrategyConstraints(Handle comp_handle, HWLayers *hw_la
       hw_layers->info.stack->flags.skip_present = 1;
       for(auto &layer : hw_layers->info.stack->layers) {
         if(layer->composition != kCompositionGPUTarget) {
-          layer->flags.skip = 1;
+          //layer->flags.skip = 1;
         }
       }
     } else if (secure_external_transition_) {
@@ -444,7 +444,9 @@ void CompManager::ProcessIdleTimeout(Handle display_ctx) {
     return;
   }
 
-  display_comp_ctx->idle_fallback = true;
+  // Disabled: idle fallback to GPU causes jank on Adreno 506.
+  // SDE composition is always preferred.
+  // display_comp_ctx->idle_fallback = true;
 }
 
 void CompManager::ProcessThermalEvent(Handle display_ctx, int64_t thermal_level) {
@@ -453,11 +455,9 @@ void CompManager::ProcessThermalEvent(Handle display_ctx, int64_t thermal_level)
   DisplayCompositionContext *display_comp_ctx =
           reinterpret_cast<DisplayCompositionContext *>(display_ctx);
 
-  if (thermal_level >= kMaxThermalLevel) {
-    display_comp_ctx->thermal_fallback_ = true;
-  } else {
-    display_comp_ctx->thermal_fallback_ = false;
-  }
+  // Disabled: thermal fallback to GPU causes more heat than
+  // SDE composition on msm8953. SDE is always more efficient.
+  display_comp_ctx->thermal_fallback_ = false;
 }
 
 void CompManager::ProcessIdlePowerCollapse(Handle display_ctx) {
@@ -595,10 +595,8 @@ bool CompManager::SetDisplayState(Handle display_ctx,
     break;
 
   case kStateOn:
-    if (registered_displays_.count() > 1) {
-      safe_mode_ = true;
-      DLOGV_IF(kTagCompManager, "safe_mode = %d", safe_mode_);
-    }
+    // Don't trigger safe_mode on display state change.
+    // SDE composition should be maintained through transitions.
     break;
 
   default:

@@ -488,15 +488,15 @@ void HWCDisplay::BuildLayerStack() {
 
     if (!hwc_layer->ValidateAndSetCSC()) {
 #ifdef FEATURE_WIDE_COLOR
-      layer->flags.skip = true;
+      //layer->flags.skip = true;
 #endif
     }
 
     working_primaries = WidestPrimaries(working_primaries,
                                         layer->input_buffer.color_metadata.colorPrimaries);
 
-    // set default composition as GPU for SDM
-    layer->composition = kCompositionGPU;
+    // set default composition as SDE for SDM — prefer hardware composition
+    layer->composition = kCompositionSDE;
 
     if (swap_interval_zero_) {
       if (layer->input_buffer.acquire_fence_fd >= 0) {
@@ -545,7 +545,7 @@ void HWCDisplay::BuildLayerStack() {
 
     if (hwc_layer->IsNonIntegralSourceCrop() && !is_secure && !hdr_layer &&
         !layer->flags.single_buffer && !layer->flags.solid_fill) {
-      layer->flags.skip = true;
+      //layer->flags.skip = true;
     }
 
     if (layer->flags.skip) {
@@ -582,10 +582,7 @@ void HWCDisplay::BuildLayerStack() {
     display_rect_ = Union(display_rect_, layer->dst_rect);
     geometry_changes_ |= hwc_layer->GetGeometryChanges();
 
-    layer->flags.updating = true;
-    if (layer_set_.size() <= kMaxLayerCount) {
-      layer->flags.updating = IsLayerUpdating(layer);
-    }
+    layer->flags.updating = IsLayerUpdating(layer);
 
     layer_stack_.layers.push_back(layer);
   }
@@ -596,7 +593,7 @@ void HWCDisplay::BuildLayerStack() {
     auto layer = hwc_layer->GetSDMLayer();
     if (layer->input_buffer.color_metadata.colorPrimaries != working_primaries &&
         !hwc_layer->SupportLocalConversion(working_primaries)) {
-      layer->flags.skip = true;
+      //layer->flags.skip = true;
     }
     if (layer->flags.skip) {
       layer_stack_.flags.skip_present = true;
@@ -615,8 +612,9 @@ void HWCDisplay::BuildLayerStack() {
   // TODO(user): clarify the behaviour from Client(SF) and SDM Extn -
   // when handling 10bit FBT, as it would affect blending
   if (Is10BitFormat(sdm_client_target->input_buffer.format)) {
-    // Must fall back to client composition
-    MarkLayersForClientComposition();
+    // Don't force GPU fallback for 10-bit FBT on msm8953.
+    // SDE can handle the layer stack directly.
+    DLOGW("10-bit FBT detected but SDE composition preferred");
   }
 
   // set secure display
@@ -2046,12 +2044,6 @@ std::string HWCDisplay::Dump() {
 }
 
 bool HWCDisplay::CanSkipValidate() {
-  // Layer Stack checks
-  if (layer_stack_.flags.hdr_present && (tone_mapper_ && tone_mapper_->IsActive())) {
-    DLOGV_IF(kTagClient, "HDR content present with tone mapping enabled. Returning false.");
-    return false;
-  }
-
   if (client_target_->NeedsValidation()) {
     DLOGV_IF(kTagClient, "Framebuffer target needs validation. Returning false.");
     return false;

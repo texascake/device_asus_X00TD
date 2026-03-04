@@ -107,6 +107,7 @@ class HWCLayer {
   int32_t dataspace_ =  HAL_DATASPACE_UNKNOWN;
   bool needs_validate_ = true;
   bool non_integral_source_crop_ = false;
+  uint64_t last_buffer_id_ = 0;
 
   // Composition requested by client(SF)
   HWC2::Composition client_requested_ = HWC2::Composition::Device;

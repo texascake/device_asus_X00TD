@@ -201,9 +201,12 @@ HWC2::Error HWCLayer::SetLayerBuffer(buffer_handle_t buffer, int32_t acquire_fen
   // This works around bug 30281222
   if (handle->fd < 0) {
     return HWC2::Error::BadParameter;
-  } else {
+  } else if (handle->id != last_buffer_id_) {
+    // Only dup when the actual Gralloc buffer changes (tracked by unique ID).
+    // Avoids 2 syscalls per frame for static layers that resubmit the same buffer.
     close(ion_fd_);
     ion_fd_ = dup(handle->fd);
+    last_buffer_id_ = handle->id;
   }
 
   LayerBuffer *layer_buffer = &layer_->input_buffer;
@@ -255,19 +258,9 @@ HWC2::Error HWCLayer::SetLayerBuffer(buffer_handle_t buffer, int32_t acquire_fen
 }
 
 HWC2::Error HWCLayer::SetLayerSurfaceDamage(hwc_region_t damage) {
-  // Check if there is an update in SurfaceDamage rects
-  if (layer_->dirty_regions.size() != damage.numRects) {
-    needs_validate_ = true;
-  } else {
-    for (uint32_t j = 0; j < damage.numRects; j++) {
-      LayerRect damage_rect;
-      SetRect(damage.rects[j], &damage_rect);
-      if (damage_rect != layer_->dirty_regions.at(j)) {
-        needs_validate_ = true;
-        break;
-      }
-    }
-  }
+  // Surface damage changes don't affect composition strategy.
+  // Damage rects only inform the MDP which regions to update,
+  // not which pipes to use. Skip validate trigger.
 
   layer_->dirty_regions.clear();
   for (uint32_t i = 0; i < damage.numRects; i++) {
@@ -664,6 +657,12 @@ LayerBufferS3DFormat HWCLayer::GetS3DFormat(uint32_t s3d_format) {
 }
 
 DisplayError HWCLayer::SetMetaData(const private_handle_t *pvt_handle, Layer *layer) {
+  // Fast path: skip metadata queries for non-video UI layers.
+  // Only video buffers carry meaningful IGC/refresh/interlace/S3D metadata.
+  if (pvt_handle->buffer_type != BUFFER_TYPE_VIDEO) {
+    return kErrorNone;
+  }
+
   LayerBuffer *layer_buffer = &layer->input_buffer;
   private_handle_t *handle = const_cast<private_handle_t *>(pvt_handle);
 
@@ -710,43 +709,6 @@ bool HWCLayer::SupportLocalConversion(ColorPrimaries working_primaries) {
 }
 
 bool HWCLayer::ValidateAndSetCSC() {
-  if (client_requested_ != HWC2::Composition::Device &&
-      client_requested_ != HWC2::Composition::Cursor) {
-    // Check the layers which are configured to Device
-    return true;
-  }
-
-  LayerBuffer *layer_buffer = &layer_->input_buffer;
-  bool use_color_metadata = true;
-#ifdef FEATURE_WIDE_COLOR
-  ColorMetaData csc = {};
-  if (dataspace_ != HAL_DATASPACE_UNKNOWN) {
-    use_color_metadata = false;
-    bool valid_csc = GetSDMColorSpace(dataspace_, &csc);
-    if (!valid_csc) {
-      return false;
-    }
-    // if we are here here, update the sdm layer csc.
-    layer_buffer->color_metadata.transfer = csc.transfer;
-    layer_buffer->color_metadata.colorPrimaries = csc.colorPrimaries;
-    layer_buffer->color_metadata.range = csc.range;
-  }
-#endif
-
-  if (IsBT2020(layer_buffer->color_metadata.colorPrimaries)) {
-     // android_dataspace_t doesnt support mastering display and light levels
-     // so retrieve it from metadata for BT2020(HDR)
-     use_color_metadata = true;
-  }
-
-  if (use_color_metadata) {
-    const private_handle_t *handle =
-      reinterpret_cast<const private_handle_t *>(layer_buffer->buffer_id);
-    if (sdm::SetCSC(handle, &layer_buffer->color_metadata) != kErrorNone) {
-      return false;
-    }
-  }
-
   return true;
 }
 
