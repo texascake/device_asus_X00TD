@@ -112,10 +112,3 @@ persist.device_config.mglru_native.lru_gen_config=core
 
 # LTE_CA
 persist.sys.radio.force_lte_ca=true
-
-# Infinity_X
-ro.product.marketname=Asus Zenfone Max Pro M2
-ro.infinity.soc=Snapdragon™ 660
-ro.infinity.battery=5000 mAh
-ro.infinity.display=1080 x 2280, 60 Hz
-ro.infinity.camera=12MP + 5MP + 13MP
