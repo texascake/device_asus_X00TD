@@ -11,7 +11,7 @@ $(call inherit-product, vendor/asus/X01BD/X01BD-vendor.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
 
 # Inherit our signing key
-$(call inherit-product-if-exists, vendor/rsuntk-priv/keys/keys.mk)
+$(call inherit-product-if-exists, vendor/lineage-priv/keys/keys.mk)
 
 # Add common definitions for Qualcomm
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
