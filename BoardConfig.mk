@@ -152,7 +152,7 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_SOURCE := kernel/asus/sdm660
 TARGET_KERNEL_VERSION := 4.19
 TARGET_KERNEL_NO_GCC := true
-TARGET_KERNEL_CONFIG := vendor/asus/X01BD_defconfig
+TARGET_KERNEL_CONFIG := asus/X01BD_defconfig
 
 # Kernel Clang Flags
 KERNEL_CC := CC=clang
