@@ -1,17 +1,18 @@
 #!/bin/bash
 
 # Removing
-rm -rf device/asus
+#rm -rf device/asus
 rm -rf kernel/asus
 rm -rf vendor/asus
 
 ## cloning
-git clone --depth=1 https://github.com/texascake/device_asus_X00TD -b afl device/asus/X01BD
+#git clone --depth=1 https://github.com/texascake/device_asus_X00TD -b afl device/asus/X01BD
 git clone --depth=1 https://gitlab.com/rsuntk-asus-sdm660/android_vendor_asus_X01BD.git vendor/asus/X01BD
 git clone --depth=1 https://github.com/Tiktodz/scripts lineage/scripts
+git clone --depth=1 --recurse-submodules https://github.com/Tiktodz/android_kernel_asus_sdm660 kernel/asus/sdm660
 
 ### Renaming
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOMTzy-969"/g' kernel/asus/sdm660/arch/arm64/configs/vendor/asus/X01BD_defconfig
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969"/g' kernel/asus/sdm660/arch/arm64/configs/vendor/asus/X01BD_defconfig
 
 #### signing
 rm -rf vendor/afterlife-priv/keys
