@@ -20,7 +20,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 -include device/asus/X01BD-ext/extras.mk
 
 # Kernel
-PRODUCT_ENABLE_UFFD_GC := true
+PRODUCT_ENABLE_UFFD_GC := false
+OVERRIDE_ENABLE_UFFD_GC := false
 
 # Default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
