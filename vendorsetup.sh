@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Removing
-#rm -rf device/asus
+rm -rf device/asus
 rm -rf kernel/asus
 rm -rf vendor/asus
 
