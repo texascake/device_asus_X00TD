@@ -14,10 +14,10 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
 # For device without sdcardfs
-$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # Include extras if its exist
--include device/asus/X01BD-ext/extras.mk
+#-include device/asus/X01BD-ext/extras.mk
 
 # Kernel
 PRODUCT_ENABLE_UFFD_GC := false
@@ -165,10 +165,6 @@ PRODUCT_PACKAGES += \
 # Display Device Config
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/displayconfig/display_id_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_0.xml
-
-# Disable buffer age (b/74534157)
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.hwui.use_buffer_age=true
 
 # Dolby
 PRODUCT_PACKAGES += \
