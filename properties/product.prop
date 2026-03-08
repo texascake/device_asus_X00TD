@@ -1,3 +1,6 @@
+# Animation
+persist.sys.activity_anim_perf_override=false
+
 # Bluetooth
 bluetooth.hardware.power.operating_voltage_mv=3300
 bluetooth.le.disable_apcf_extended_features=1
